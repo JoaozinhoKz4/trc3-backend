@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePerguntaDto } from './dto/create-pergunta.dto';
-import { UpdatePerguntaDto } from './dto/update-pergunta.dto';
 import { OpenAIService } from 'src/openai/openai.service';
 
 @Injectable()
