@@ -17,23 +17,9 @@ export class PerguntasController {
     return this.perguntasService.findAll();
   }
 
-  @Post('perguntaAluno')
-  async perguntaAluno(@Body() perguntaDoAluno){
-    return this.perguntasService.perguntaAluno(perguntaDoAluno.texto)
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.perguntasService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePerguntaDto: UpdatePerguntaDto) {
-    return this.perguntasService.update(+id, updatePerguntaDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.perguntasService.remove(+id);
-  }
 }

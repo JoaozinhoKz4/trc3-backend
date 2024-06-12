@@ -5,44 +5,38 @@ import { OpenAIService } from 'src/openai/openai.service';
 
 @Injectable()
 export class PerguntasService {
+  public gptMessages= []
+  public perguntasAlunos=[]
+  public entidadeEmMemoriaPerguntas= []
   constructor(private readonly openAiService: OpenAIService){
 
   }
-  create(createPerguntaDto: CreatePerguntaDto) {
-    return 'This action adds a new pergunta';
+  async create(createPerguntaDto: CreatePerguntaDto) {
+    await this.perguntaAluno(createPerguntaDto.perguntaDoAluno, this.entidadeEmMemoriaPerguntas.length > 1 ? this.entidadeEmMemoriaPerguntas[this.entidadeEmMemoriaPerguntas.length - 1] : 1)
   }
 
   findAll() {
-    return `This action returns all perguntas`;
+    return this.entidadeEmMemoriaPerguntas;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} pergunta`;
+    return this.entidadeEmMemoriaPerguntas[id - 1]
   }
 
-  update(id: number, updatePerguntaDto: UpdatePerguntaDto) {
-    return `This action updates a #${id} pergunta`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} pergunta`;
-  }
-
-  async perguntaAluno(perguntaDoAluno){
-    let gptMessages = []
-    gptMessages.push({
+  async perguntaAluno(perguntaDoAluno, id){
+   this.gptMessages.push({
         role: "system",
         content: `Você é um assistente capaz de responder as perguntas de alunos da Universidade de Brasilia, conhecida como UnB, a partir de busca na base de dados interna e na internet.`,
       })
     
-     gptMessages.push({
+    this.gptMessages.push({
         role: 'assistant',
         content: 'Me dê instruções de como responder a pergunta',
       });
 
-      gptMessages.push({ role: 'user', content: perguntaDoAluno.texto });
+     this.gptMessages.push({ role: 'user', content: perguntaDoAluno.texto });
   
-     gptMessages.push({
+    this.gptMessages.push({
         role: 'user',
         content: `Sua função é retornar uma resposta plausível a pergunta dada pelo usuário buscando as informações em dados previamente pesquisados
   
@@ -60,14 +54,14 @@ export class PerguntasService {
       });
 
       const gptRawResponse = (await this.openAiService.chatGptRequest(
-        gptMessages,
+       this.gptMessages,
         'json_object',
       )) as string;
 
       const gptResponse = JSON.parse(gptRawResponse);
 
       if (gptResponse.questions) {
-        gptMessages.push({
+       this.gptMessages.push({
           role: 'assistant',
           content: gptRawResponse,
         });
@@ -85,7 +79,15 @@ export class PerguntasService {
           searchTerms: string[];
           keywords: string[];
         };
-    
+      this.perguntasAlunos.push(perguntaDoAluno)
+      let entityASerSalva = {
+        id,
+        retornoAi,
+        searchTerms,
+        keywords,
+        perguntaDoAluno
+      }
+      this.entidadeEmMemoriaPerguntas.push(entityASerSalva)
       return {
         retornoAi,
         searchTerms,
