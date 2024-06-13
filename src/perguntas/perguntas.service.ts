@@ -25,7 +25,7 @@ export class PerguntasService {
   async perguntaAluno(perguntaDoAluno, id){
    this.gptMessages.push({
         role: "system",
-        content: `Você é um assistente capaz de responder as perguntas de alunos da Universidade de Brasilia, conhecida como UnB, a partir de busca na base de dados interna e na internet.`,
+        content: `Você é um assistente capaz de responder as perguntas de alunos da Universidade de Brasilia, conhecida como UnB, a partir de busca na base de dados interna e na internet. Seu nome é ChatUnB`,
       })
     
     this.gptMessages.push({
