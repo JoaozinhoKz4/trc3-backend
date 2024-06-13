@@ -11,7 +11,7 @@ export class PerguntasService {
 
   }
   async create(createPerguntaDto: CreatePerguntaDto) {
-    await this.perguntaAluno(createPerguntaDto.perguntaDoAluno, this.entidadeEmMemoriaPerguntas.length > 1 ? this.entidadeEmMemoriaPerguntas[this.entidadeEmMemoriaPerguntas.length - 1] : 1)
+    return await this.perguntaAluno(createPerguntaDto.perguntaDoAluno, this.entidadeEmMemoriaPerguntas.length > 1 ? this.entidadeEmMemoriaPerguntas[this.entidadeEmMemoriaPerguntas.length - 1] : 1)
   }
 
   findAll() {
@@ -33,7 +33,7 @@ export class PerguntasService {
         content: 'Me dê instruções de como responder a pergunta',
       });
 
-     this.gptMessages.push({ role: 'user', content: perguntaDoAluno.texto });
+     this.gptMessages.push({ role: 'user', content: perguntaDoAluno});
   
     this.gptMessages.push({
         role: 'user',

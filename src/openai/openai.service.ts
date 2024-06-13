@@ -11,7 +11,7 @@ import { Run } from 'openai/resources/beta/threads/runs/runs';
 @Injectable()
 export class OpenAIService {
   private readonly openai = new OpenAIApi({
-    apiKey: '1234',
+    apiKey: '123',
   });
 
   /**
@@ -27,7 +27,7 @@ export class OpenAIService {
       // Make a request to the ChatGPT model
       const completion: ChatCompletion =
         await this.openai.chat.completions.create({
-          model: 'gpt-4-1106-preview',
+          model: 'gpt-4-turbo',
           messages,
           response_format: response_format && { type: response_format },
           n: 1,
@@ -60,7 +60,7 @@ export class OpenAIService {
     tools?: ChatCompletionTool[];
   }) {
     return this.openai.beta.assistants.create({
-      model: 'gpt-4-1106-preview',
+      model: 'gpt-4-turbo',
       name: params.name,
       instructions: params.instructions,
       tools: params.tools,
